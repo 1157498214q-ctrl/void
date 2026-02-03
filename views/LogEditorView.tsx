@@ -462,17 +462,15 @@ const LogEditorView: React.FC<Props> = ({ log, availableCharacters, onBack, onSa
       <footer className="shrink-0 p-4 bg-archive-black border-t border-archive-grey z-50 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
         <div className="max-w-md mx-auto flex">
           <button
-            onClick={() => {
-              console.log('发布按钮被点击');
-              handlePushToArchive();
-            }}
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              console.log('发布按钮触摸结束');
+            type="button"
+            onClick={(e) => {
+              if (isSyncing) return;
+              console.log('发布按钮点击事件触发');
               handlePushToArchive();
             }}
             disabled={isSyncing}
-            className={`w-full h-14 bg-archive-accent text-black flex flex-col items-center justify-center transition-all shadow-[0_0_20px_rgba(0,163,255,0.2)] hover:shadow-[0_0_30px_rgba(0,163,255,0.4)] active:scale-[0.98] ${isSyncing ? 'opacity-50' : ''}`}
+            style={{ touchAction: 'manipulation' }}
+            className={`w-full h-14 bg-archive-accent text-black flex flex-col items-center justify-center transition-all shadow-[0_0_20px_rgba(0,163,255,0.2)] hover:shadow-[0_0_30px_rgba(0,163,255,0.4)] active:scale-[0.98] select-none ${isSyncing ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-lg">{isSyncing ? 'sync' : 'publish'}</span>
