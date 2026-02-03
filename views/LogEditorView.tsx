@@ -7,7 +7,7 @@ interface Props {
   log: ArchiveLog | null;
   availableCharacters: Character[];
   onBack: () => void;
-  onSave?: (log: ArchiveLog) => void;
+  onSave?: (log: ArchiveLog) => void | Promise<void>;
   onDeleteLog?: (logId: string) => void;
 }
 
