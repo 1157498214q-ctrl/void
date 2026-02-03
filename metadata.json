@@ -1,0 +1,7 @@
+{
+  "name": "Void Archive System",
+  "description": "A high-fidelity digital archive and roleplay logging system with a futuristic terminal aesthetic.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

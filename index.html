@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Void Archive System</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Roboto+Mono:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        archive: {
+                            black: "var(--archive-bg)",
+                            deep: "var(--archive-deep)",
+                            accent: "var(--archive-accent)",
+                            text: "var(--archive-text)",
+                            grey: "var(--archive-grey)",
+                            dim: "var(--archive-dim)",
+                            muted: "var(--archive-muted)"
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'sans-serif'],
+                        mono: ['Roboto Mono', 'monospace'],
+                        header: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            :root {
+                --archive-bg: #000000;
+                --archive-deep: #050505;
+                --archive-accent: #00A3FF;
+                --archive-text: #F0F0F0;
+                --archive-grey: #1A1A1A;
+                --archive-dim: #4A4A4A;
+                --archive-muted: #666666;
+            }
+
+            /* 白天模式 - 浅色底深色字 */
+            [data-theme='light'] {
+                --archive-bg: #FDFDFD;
+                --archive-deep: #F5F5F5;
+                --archive-accent: #007ACC; /* 稍深的蓝色，确保浅色底上的可读性 */
+                --archive-text: #121212;
+                --archive-grey: #E0E0E0;
+                --archive-dim: #777777;
+                --archive-muted: #999999;
+            }
+
+            body {
+                @apply bg-archive-black text-archive-text font-mono antialiased transition-colors duration-500;
+            }
+            ::-webkit-scrollbar {
+                width: 2px;
+                height: 2px;
+            }
+            ::-webkit-scrollbar-thumb {
+                @apply bg-archive-grey;
+            }
+        }
+        .noise-bg {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+        .thin-border {
+            border: 1px solid var(--archive-grey);
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.39.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
