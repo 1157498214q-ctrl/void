@@ -141,18 +141,25 @@ const LogEditorView: React.FC<Props> = ({ log, availableCharacters, onBack, onSa
   const handlePushToArchive = async () => {
     setIsSyncing(true);
     try {
-      let finalEntries = entries;
+      let finalEntries = [...entries];
+
+      // 如果正在编辑，先保存当前编辑的内容
       if (editingIndex !== null) {
-        finalEntries = [...entries];
         finalEntries[editingIndex] = {
           ...finalEntries[editingIndex],
           content: editingText,
           role: editingRole,
           avatarUrl: (editingRole === 'NAR' || editingRole === 'CHAPTER') ? undefined : sortedParticipants.find(p => p.name === editingRole)?.imageUrl
         };
-        setEntries(finalEntries);
         setEditingIndex(null);
       }
+
+      // 过滤掉空内容的条目（章节标题除外，因为它们可能故意为空）
+      finalEntries = finalEntries.filter(e => e.content.trim() !== '' || e.role === 'CHAPTER');
+      setEntries(finalEntries);
+
+      console.log('准备保存的条目数量:', finalEntries.length);
+      console.log('条目内容:', JSON.stringify(finalEntries, null, 2));
 
       if (onSave && log) {
         await onSave({
@@ -164,6 +171,7 @@ const LogEditorView: React.FC<Props> = ({ log, availableCharacters, onBack, onSa
           entries: finalEntries,
           participants: Array.from(new Set(finalEntries.filter(e => e.role !== 'NAR' && e.role !== 'CHAPTER').map(e => e.role)))
         });
+        console.log('保存成功');
       }
     } catch (error) {
       console.error('保存失败:', error);
