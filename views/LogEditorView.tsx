@@ -138,24 +138,24 @@ const LogEditorView: React.FC<Props> = ({ log, availableCharacters, onBack, onSa
     if (editingIndex === index) setEditingIndex(null);
   };
 
-  const handlePushToArchive = () => {
+  const handlePushToArchive = async () => {
     setIsSyncing(true);
-    let finalEntries = entries;
-    if (editingIndex !== null) {
-      finalEntries = [...entries];
-      finalEntries[editingIndex] = {
-        ...finalEntries[editingIndex],
-        content: editingText,
-        role: editingRole,
-        avatarUrl: (editingRole === 'NAR' || editingRole === 'CHAPTER') ? undefined : sortedParticipants.find(p => p.name === editingRole)?.imageUrl
-      };
-      setEntries(finalEntries);
-      setEditingIndex(null);
-    }
+    try {
+      let finalEntries = entries;
+      if (editingIndex !== null) {
+        finalEntries = [...entries];
+        finalEntries[editingIndex] = {
+          ...finalEntries[editingIndex],
+          content: editingText,
+          role: editingRole,
+          avatarUrl: (editingRole === 'NAR' || editingRole === 'CHAPTER') ? undefined : sortedParticipants.find(p => p.name === editingRole)?.imageUrl
+        };
+        setEntries(finalEntries);
+        setEditingIndex(null);
+      }
 
-    setTimeout(() => {
       if (onSave && log) {
-        onSave({
+        await onSave({
           ...log,
           title,
           summary,
@@ -165,8 +165,12 @@ const LogEditorView: React.FC<Props> = ({ log, availableCharacters, onBack, onSa
           participants: Array.from(new Set(finalEntries.filter(e => e.role !== 'NAR' && e.role !== 'CHAPTER').map(e => e.role)))
         });
       }
+    } catch (error) {
+      console.error('保存失败:', error);
+      alert('保存失败，请检查网络连接后重试');
+    } finally {
       setIsSyncing(false);
-    }, 800);
+    }
   };
 
   const handleDestroyLog = () => {
