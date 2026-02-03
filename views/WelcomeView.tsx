@@ -32,10 +32,18 @@ const WelcomeView: React.FC<Props> = ({ onAccess }) => {
       } else {
         const { user, error } = await signUp(email, password, name || email.split('@')[0]);
         if (error) {
+          // 如果是邮箱未确认的错误，尝试直接登录
+          if (error.includes('not confirmed') || error.includes('confirm')) {
+            const { user: loginUser, error: loginError } = await signIn(email, password);
+            if (loginUser) {
+              onAccess();
+              return;
+            }
+          }
           setError(error);
         } else if (user) {
-          setSuccessMessage('注册成功！请检查邮箱确认后登录。');
-          setIsLogin(true);
+          // 注册成功，直接进入应用
+          onAccess();
         }
       }
     } catch (err) {
